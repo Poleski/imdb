@@ -1,12 +1,12 @@
-// Du¿o tego nie ma :)
+// DuÅ¼o tego nie ma :)
 
-// Chowamy podpowiedzi na starcie (automatycznie populuj¹ siê "Undefined")
+// Chowamy podpowiedzi na starcie (automatycznie populuja siÄ™ "Undefined")
 
 $(document).ready(function() {
 	$(".suggestion-box").hide();
 });
 
-// Funkcja odpalana oninput gdy piszemy coœ w searchbarze. Sztucznie spowolniona setTimeout'em, ¿eby nie pokazywaæ pocz¹tkowych wyników dla rezultatu zapytania o "Undefined" oraz ¿eby dopasowaæ do czasu okreœlonego w debounce
+// Funkcja odpalana oninput gdy piszemy coÅ› w searchbarze. Sztucznie spowolniona setTimeout'em, Å¼eby nie pokazywaÅ‚ poczÄ…tkowych wynikÃ³w dla rezultatu zapytania o "Undefined" oraz Å¼eby dopasowaÄ‡ do czasu okreÅ›lonego w debounce
 
 function showSuggestions() {
 	setTimeout(function() {
