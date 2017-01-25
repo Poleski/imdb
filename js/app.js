@@ -22,7 +22,7 @@ app.controller('movieSearchController', function($scope, $http){
 		});
 	}
 	
-//	Przy submitowaniu formularza pytamy o t=. Chowamy też podpowiedzi, żeby nam nie zasłaniały rezultatu. Pojawią się znowu jak zaczniemy coś pisać (oninput)
+// Przy submitowaniu formularza pytamy o t=. Chowamy też podpowiedzi, żeby nam nie zasłaniały rezultatu. Pojawią się znowu jak zaczniemy coś pisać (oninput)
 	
 	$scope.submitForm = function() {
 		fetchTitle();
