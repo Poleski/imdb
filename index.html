@@ -1,0 +1,107 @@
+<!-- Witam serdecznie :) Zakomentowałem swoje uwagi do kodu tu i ówdzie, tak gwoli wyjaśnienia. Całkiem fajne zadanie domowe ;) 
+
+	 Na wstępie - z oszczędności czasu większość HTML'a wygenerowałem boilerplate'm, a większość styli jest z bootstrapa. Dodałem jednak trochę własnych stylowań, tak żeby lepiej to trochę wyglądało i było responsywne.
+-->
+
+<!doctype html>
+<!--[if lt IE 7]>	  <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>		 <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>		 <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Wyszukiwarka filmów</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/normalize.css" type="text/css" />
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">	
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
+		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+		<script src="js/angular.min.js"></script>
+		<script src="js/app.js"></script>
+	</head>
+	<!-- Angular wydawał się najlepszym rozwiązaniem tego problemu -->
+	<body class="container" ng-app="movieApp" ng-controller="movieSearchController">
+		<header>Wyszukiwarka filmów</header>
+		<section class="form-wrapper">
+			<form class="form-inline" id="movieForm" ng-submit="submitForm()">
+				<div class="form-group">
+					<!-- Dodałem debounce: 500, aby spamować, i wysyłać zapytanie dopiero po 500ms od końca wpisywania -->
+					<input type="text" class="form-control" id="movie-title" placeholder="Wpisz tytuł filmu" name="s" ng-model="search" ng-model-options="{ debounce: 500 }" autocomplete="off" oninput="showSuggestions()">
+					<!-- Lista sugestii, która zastępuje wyłączony autocomplete dla powyższego inputu -->
+					<div class="suggestion-box"> 
+						<ul>
+							<li ng-repeat="movie in suggestions.Search" ng-click="select(movie)">{{movie.Title}}</li>
+						</ul>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Szukaj</button>
+			</form>
+		</section>
+		<!-- data-content używam w CSS'ie, żeby ukryć całą sekcję, póki ta wartość jest pusta -->
+		<section class="result-wrapper" data-content="{{single.Title}}">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="img-container">
+						<!-- Zastępuję Poster placeholderem, jak nie uda się go znaleźć -->
+						<a href="http://www.imdb.com/title/{{single.imdbID}}" target="_blank"><img ng-src="{{ single.Poster=='N/A' ?  
+						'http://placehold.it/300x444&text=Obraz+niedostępny' : 
+						single.Poster }}" /></a>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<!-- Wszystkie informacje chowają się, jeżeli do data zwrócone zostanie "N/A", poprzez stylowanie display: none w CSS'ie -->
+					<div class="info-container">
+						<a href="http://www.imdb.com/title/{{single.imdbID}}" target="_blank"><h3>{{single.Title}}</h3></a>
+						<!-- Przetłumaczyłem miesiąc na polski w tablicy w angularze i przypisałem datę po polsku do scope'a jako "wydano" -->
+						<div class="info-year" data-info="{{single.Released}}"><span>Data wydania:</span> {{wydano}}</div>
+						<div class="info-runtime" data-info="{{single.Runtime}}"><span>Czas trwania:</span> {{single.Runtime}}</div>		
+						<!-- Dało się też przetłumaczyć, ale to by było trochę więcej roboty, więc porzuciłem ten pomysł :) -->
+						<div class="info-genre" data-info="{{single.Genre}}"><span>Gatunek:</span> {{single.Genre}}</div>
+						<!-- Jak wyżej. -->
+						<div class="info-country" data-info="{{single.Country}}"><span>Kraj:</span> {{single.Country}}</div>
+						<div class="info-director" data-info="{{single.Director}}"><span>Reżyseria:</span> {{single.Director}}</div>
+						<div class="info-writer" data-info="{{single.Writer}}"><span>Scenariusz:</span> {{single.Writer}}</div>
+						<div class="info-cast" data-info="{{single.Actors}}"><span>Obsada:</span> {{single.Actors}}</div>
+					</div>
+				</div>
+				<!-- Elementy poniżej poprzesuwane do narożników poprzez position absolute. Wszystkie klikalne, otwierają stronę filmu lub jego podstronę z ocenami. Funkcjonalność zdublowana na tytule i obrazku, ze względu na UX -->
+				<a class="learn-more btn btn-primary" href="http://www.imdb.com/title/{{single.imdbID}}" target="_blank">Więcej</a>
+				<div class="rating-container">
+					<a href="http://www.imdb.com/title/{{single.imdbID}}/criticreviews" target="_blank"><div class="metascore" data-score="{{single.Metascore}}" title="Metascore">{{single.Metascore}}</div></a>
+					<a href="http://www.imdb.com/title/{{single.imdbID}}/ratings" target="_blank"><div class="imdbscore" title="iMDb user rating" data-score="{{single.imdbRating}}"><i class="fa fa-star" aria-hidden="true"></i> {{single.imdbRating}}</div></a>
+				 </div>
+			</div>
+		</section>
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+		<script src="js/vendor/bootstrap.min.js"></script>
+		<script src="js/main.js"></script>
+		<!-- Walidacja formularza, aby nie dało się wysłać pustego zapytania -->
+		<script src="js/vendor/jquery.validate.min.js"></script>
+		<script>
+			jQuery.validator.setDefaults({
+				debug: true,
+				success: "valid"
+			});
+			$("#movieForm").validate({
+				rules: {
+					s: {
+						required: true,
+						minlength: 1
+					}
+				},
+				messages: {
+					s: {
+						 required: "Pole nie może być puste"
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
