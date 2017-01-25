@@ -1,7 +1,7 @@
 // Nie jest to duża appka, ale jakoś działa
 // Użyłem OMDb API, jako najlepiej działającego, darmowego i, przede wszystkim, korzystającego z bazy iMDb.
 // Można do niego wysyłać zapytania po iMDb ID (i=), tytule (t=) oraz o dziesięć pasujących rezultatów (s=).
-// Użyłem dwóch ostatnich: wyszukiwania tytułem do zwrócenia filmu, i ogólnego searcha do autocomplete'aLinkcolor
+// Użyłem dwóch ostatnich: wyszukiwania tytułem do zwrócenia filmu, i ogólnego searcha do autocomplete'a
 // Na początku chciałem zrobić odwrotnie, ale przerwałem w połowie, bo to nie miało sensu z punktu widzenia UX :)
 // Nie mniej jednak moja pierwsza próba (nie ukończona), jest dostępna pod /imdb2/
 
