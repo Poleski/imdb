@@ -22,11 +22,14 @@ app.controller('movieSearchController', function($scope, $http){
 		});
 	}
 	
-// Przy submitowaniu formularza pytamy o t=. Chowamy też podpowiedzi, żeby nam nie zasłaniały rezultatu. Pojawią się znowu jak zaczniemy coś pisać (oninput)
+// Przy submitowaniu formularza pytamy o t=. Chowamy też podpowiedzi, żeby nam nie zasłaniały rezultatu. Pojawią się znowu jak zaczniemy coś pisać (oninput). Dodałem dodatkowe ukrywanie, na wypadek zbyt szybkiego searcha.
 	
 	$scope.submitForm = function() {
 		fetchTitle();
-		$(".suggestion-box").css("display", "none");
+		$(".suggestion-box").hide();
+		setTimeout(function() {
+			$(".suggestion-box").hide();
+		}, 520);
 	};
 	
 // Przy okazji robimy kilka drobnych zmian - tłumaczymy datę na polski, poprzez matchowanie z dwoma tabelami i puszczamy funkcję, która pokoloruje nam box z metascorem
