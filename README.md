@@ -3,4 +3,4 @@ Na potrzeby rekrutacji
 
 żywa wersja na:
 
-http://poleski.com.pl/imdb
+http://poleski.pl/imdb
